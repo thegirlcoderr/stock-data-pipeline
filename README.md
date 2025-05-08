@@ -24,13 +24,13 @@ Future enhancements will include deploying the pipeline to the cloud (AWS RDS, A
 
 ## Project Structure
 
-stocks_and_data/
+The project directory (`stocks_and_data/`) contains the following key files:
 
-├── .env   #Environment variables 
-├── .gitignore  #Lists untracked files (like .env) to ignore
-├── fetch_stock_data.py  #Fetches stock data from Alpha Vantage and inserts into DB
-├── fetch_and_analyze_stockdata.py #Reads stock data from DB and performs basic analysis
-└── README.md  #Project documentation
+- `.env`: Stores environment variables like your API key and database password. (This file is listed in `.gitignore` and should NOT be committed to GitHub).
+- `.gitignore`: Specifies files and directories that Git should ignore (e.g., `.env`, `__pycache__/`).
+- `fetch_stock_data.py`: This script is responsible for fetching stock data from the Alpha Vantage API and then inserting it into the PostgreSQL database.
+- `fetch_and_analyze_stockdata.py`: This script reads the stored stock data from the PostgreSQL database and performs basic data analysis.
+- `README.md`: This file, providing documentation for the project.
 
 ## Setup and Installation
 
@@ -121,3 +121,7 @@ stocks_and_data/
 - Implement more robust data cleansing and transformation steps.
 - Define and calculate more Key Performance Indicators (KPIs).
 - Develop a dashboard for data visualization (e.g., using Tableau, Power BI, or Python libraries like Dash/Streamlit).
+
+## Contributing
+
+(This section can be added later if you plan to have others contribute. For now, it can be omitted or say "Contributions are not open at this time.")
