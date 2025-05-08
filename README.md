@@ -25,11 +25,11 @@ Future enhancements will include deploying the pipeline to the cloud (AWS RDS, A
 ## Project Structure
 
 stocks_and_data/
-├── .env # Stores environment variables (API key, DB password) - DO NOT COMMIT
-├── .gitignore # Specifies intentionally untracked files that Git should ignore
-├── fetch_stock_data.py # Script to fetch data from Alpha Vantage and insert into DB
-├── fetch_and_analyze_stockdata.py # Script to read data from DB and perform analysis
-└── README.md # This file
+├── .env # Environment variables (API key, DB password) – DO NOT COMMIT
+├── .gitignore # Lists untracked files (like .env) to ignore
+├── fetch_stock_data.py # Fetches stock data from Alpha Vantage and inserts into DB
+├── fetch_and_analyze_stockdata.py # Reads stock data from DB and performs basic analysis
+└── README.md # Project documentation
 
 ## Setup and Installation
 
