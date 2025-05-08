@@ -1,5 +1,3 @@
-# fetch_stock_data.py
-
 import requests
 import pandas as pd
 from dotenv import load_dotenv
