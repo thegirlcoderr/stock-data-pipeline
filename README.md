@@ -56,7 +56,7 @@ stocks_and_data/
 
 4.  **Set up PostgreSQL:**
 
-    - Install PostgreSQL locally (e.g., using Postgres.app for macOS, or the official installer for other OS).
+    Install PostgreSQL locally (e.g., using Postgres.app for macOS, or the official installer for other OS).
     - Ensure the PostgreSQL server is running.
     - Create a database named `stock_data_db`.
       ```sql
@@ -86,7 +86,6 @@ stocks_and_data/
       ALPHA_VANTAGE_API_KEY="YOUR_ALPHA_VANTAGE_API_KEY"
       DB_PASSWORD_POSTGRES="YOUR_LOCAL_DB_PASSWORD"
       ```
-      (If your local PostgreSQL doesn't require a password for the `postgres` user, you can leave `DB_PASSWORD_POSTGRES=""`).
     - **Important:** The `.env` file is listed in `.gitignore` and should NOT be committed to version control.
 
 ## How to Run the Scripts
