@@ -1,0 +1,22 @@
+# Environment variables 
+.env
+
+# Python cache & compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment folders 
+venv/
+env/
+.venv/
+
+# macOS specific
+.DS_Store
+
+# VSCode specific (if you use it)
+# .vscode/
+
+# PyCharm specific (if you use it)
+# .idea/
