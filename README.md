@@ -56,7 +56,7 @@ stocks_and_data/
 
 4.  **Set up PostgreSQL:**
 
-    Install PostgreSQL locally (e.g., using Postgres.app for macOS, or the official installer for other OS).
+    - Install PostgreSQL locally (e.g., using Postgres.app for macOS, or the official installer for other OS).
     - Ensure the PostgreSQL server is running.
     - Create a database named `stock_data_db`.
       ```sql
