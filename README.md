@@ -86,6 +86,7 @@ stocks_and_data/
       ALPHA_VANTAGE_API_KEY="YOUR_ALPHA_VANTAGE_API_KEY"
       DB_PASSWORD_POSTGRES="YOUR_LOCAL_DB_PASSWORD"
       ```
+      (If your local PostgreSQL doesn't require a password for the `postgres` user, you can leave `DB_PASSWORD_POSTGRES=""`).
     - **Important:** The `.env` file is listed in `.gitignore` and should NOT be committed to version control.
 
 ## How to Run the Scripts
