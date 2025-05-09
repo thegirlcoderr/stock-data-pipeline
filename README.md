@@ -121,7 +121,3 @@ The project directory (`stocks_and_data/`) contains the following key files:
 - Implement more robust data cleansing and transformation steps.
 - Define and calculate more Key Performance Indicators (KPIs).
 - Develop a dashboard for data visualization (e.g., using Tableau, Power BI, or Python libraries like Dash/Streamlit).
-
-## Contributing
-
-(This section can be added later if you plan to have others contribute. For now, it can be omitted or say "Contributions are not open at this time.")
