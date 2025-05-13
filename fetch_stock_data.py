@@ -11,10 +11,10 @@ load_dotenv()
 # Alpha Vantage API Key
 API_KEY = os.getenv("ALPHA_VANTAGE_API_KEY")
 
-# PostgreSQL Connection Details (from .env file)
-DB_HOST = 'localhost'
-DB_NAME = 'stock_data_db'
-DB_USER = 'postgres'
+# PostgreSQL Connection Details (all from .env file)
+DB_HOST = os.getenv('DB_HOST') 
+DB_NAME = os.getenv('DB_NAME') 
+DB_USER = os.getenv('DB_USER')    
 DB_PASSWORD = os.getenv('DB_PASSWORD_POSTGRES')
 
 def fetch_daily_data_from_alpha_vantage(symbol, outputsize="compact"):
@@ -71,14 +71,19 @@ def insert_stock_data_to_db(df_to_insert):
         print("No data to insert into the database.")
         return
 
-    if DB_PASSWORD is None: 
-        print("Error: DB_PASSWORD_POSTGRES is not set in the .env file or .env not loaded. Cannot connect to DB.")
-        print("If your local PostgreSQL requires no password, ensure DB_PASSWORD_POSTGRES=\"\" is in a loaded .env file.")
+    # Check if any of the essential DB connection variables are missing from .env
+    if not all([DB_HOST, DB_NAME, DB_USER, DB_PASSWORD is not None]): # DB_PASSWORD can be "" for local, but not None
+        print("Error: One or more database connection details (DB_HOST, DB_NAME, DB_USER, DB_PASSWORD_POSTGRES) are not correctly set in the .env file.")
+        if DB_HOST is None: print("DB_HOST is missing from .env")
+        if DB_NAME is None: print("DB_NAME is missing from .env")
+        if DB_USER is None: print("DB_USER is missing from .env")
+        if DB_PASSWORD is None: print("DB_PASSWORD_POSTGRES is missing from .env or .env was not loaded.")
         return
 
     conn = None
     cursor = None
     try:
+        print(f"Attempting to connect to DB: Host={DB_HOST}, DBName={DB_NAME}, User={DB_USER}") 
         conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD, host=DB_HOST)
         cursor = conn.cursor()
         
@@ -93,7 +98,7 @@ def insert_stock_data_to_db(df_to_insert):
         
         extras.execute_values(cursor, insert_query, tuples_to_insert)
         conn.commit()
-        print(f"Successfully inserted/skipped {len(tuples_to_insert)} rows into daily_stock_data table.")
+        print(f"Successfully inserted/skipped {len(tuples_to_insert)} rows into daily_stock_data table on {DB_HOST}.")
 
     except psycopg2.Error as db_err:
         print(f"Database error during insertion: {db_err}")
@@ -110,7 +115,7 @@ def insert_stock_data_to_db(df_to_insert):
             conn.close()
 
 if __name__ == "__main__":
-    symbol_to_fetch = "IBM" 
+    symbol_to_fetch = "IBM" # You can change this to test other symbols
     print(f"--- Running fetch_stock_data.py for {symbol_to_fetch} ---")
     
     stock_df_api = fetch_daily_data_from_alpha_vantage(symbol_to_fetch, outputsize="compact") 
