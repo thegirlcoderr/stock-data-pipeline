@@ -1,8 +1,6 @@
 # stock-data-pipeline
 
-This project implements an end-to-end data pipeline to fetch daily stock market data from an external API, store it in a PostgreSQL database on AWS RDS, orchestrate the workflow with Apache Airflow, and visualize key metrics using Grafana.
-
-A data pipeline project that fetches financial data from the Alpha Vantage API, transforms it using Python scripts, stores it in a PostgreSQL database (hosted on AWS RDS), and visualizes the data through Grafana. Apache Airflow orchestrates the entire workflow.
+This project implements an end-to-end data pipeline that retrieves daily stock market data from the Alpha Vantage API, transforms it using Python, stores it in a PostgreSQL database hosted on AWS RDS, and visualizes key financial metrics using Grafana. The entire workflow is orchestrated and automated with Apache Airflow.
 
 ## Architecture Diagram
 
