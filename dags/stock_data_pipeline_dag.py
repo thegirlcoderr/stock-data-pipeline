@@ -1,5 +1,3 @@
-# ~/airflow/dags/stock_data_pipeline_dag.py
-
 from __future__ import annotations
 
 import pendulum
@@ -9,20 +7,19 @@ from airflow.operators.bash import BashOperator
 
 # --- PATH DEFINITIONS ---
 # These paths tell Airflow where to find your Python interpreter and scripts.
-# Make sure they are correct for your system.
 
-# Path to the Python interpreter inside your virtual environment (airflow_venv)
+# Path to the Python interpreter inside virtual environment (airflow_venv)
 # Example: "/Users/linda/airflow_venv/bin/python3"
 python_interpreter_path = "/Users/linda/airflow_venv/bin/python3" # FIXME: VERIFY THIS PATH
 
-# Absolute path to your project directory where your scripts and .env file are located
+# Path to project directory where scripts and .env file are located
 # Example: "/Users/linda/Desktop/stocks_and_data"
 project_directory_path = "/Users/linda/Desktop/stocks_and_data" # FIXME: VERIFY THIS PATH
 
-# Path to your virtual environment's 'activate' script
+# Path to virtual environment's 'activate' script
 venv_activate_path = "/Users/linda/airflow_venv/bin/activate" # FIXME: VERIFY THIS PATH
 
-# Full paths to your scripts
+# Full paths to scripts
 fetch_script_path = f"{project_directory_path}/fetch_stock_data.py"
 analyze_script_path = f"{project_directory_path}/fetch_and_analyze_stockdata.py"
 # --- END OF PATH DEFINITIONS ---
