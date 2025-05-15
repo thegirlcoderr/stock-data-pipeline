@@ -193,10 +193,10 @@ airflow standalone
 
 ## Current Status
 
-✅ End-to-end pipeline: fetch → transform → store
-✅ Orchestration with Apache Airflow
-✅ Visualization with Grafana
-✅ Secrets managed with `.env`
+- End-to-end pipeline: fetch → transform → store
+- Orchestration with Apache Airflow
+- Visualization with Grafana
+- Secrets managed with `.env`
 
 ## Next Steps
 
