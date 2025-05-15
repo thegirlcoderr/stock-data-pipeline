@@ -72,7 +72,7 @@ stock-data-pipeline/
 ├── grafana_dashboards/
 │   └── dashboard_export.json (optional)
 ├── images/
-│   └── screenshot.png
+│   └── Screenshot.png
 └── README.md
 ```
 
