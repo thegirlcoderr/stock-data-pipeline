@@ -1,3 +1,5 @@
+# /Users/linda/Desktop/stocks_and_data/fetch_and_analyze_stockdata.py
+
 import psycopg2
 import pandas as pd
 from dotenv import load_dotenv
@@ -12,33 +14,32 @@ DB_NAME = os.getenv('DB_NAME')
 DB_USER = os.getenv('DB_USER') 
 DB_PASSWORD = os.getenv('DB_PASSWORD_POSTGRES') 
 
-def fetch_stock_data_from_db():
+def fetch_stock_data_from_db(): # Function name can remain, but it now fetches transformed data
     conn = None
-
-    if not all([DB_HOST, DB_NAME, DB_USER, DB_PASSWORD is not None]): # DB_PASSWORD can be "" for local, but not None
+    if not all([DB_HOST, DB_NAME, DB_USER, DB_PASSWORD is not None]):
         print("Error: One or more database connection details (DB_HOST, DB_NAME, DB_USER, DB_PASSWORD_POSTGRES) are not correctly set in the .env file.")
-        if DB_HOST is None: print("DB_HOST is missing from .env")
-        if DB_NAME is None: print("DB_NAME is missing from .env")
-        if DB_USER is None: print("DB_USER is missing from .env")
-        if DB_PASSWORD is None: print("DB_PASSWORD_POSTGRES is missing from .env or .env was not loaded.")
+        if DB_PASSWORD is None:
+             print("Specifically, DB_PASSWORD_POSTGRES seems to be missing from .env or .env was not loaded.")
         return None
         
     try:
         print(f"Attempting to connect to DB: Host={DB_HOST}, DBName={DB_NAME}, User={DB_USER}") 
         conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD, host=DB_HOST)
+        # Query the new 'transformed_stock_data' table
         query = """
-            SELECT symbol, trade_date, open_price, high_price, low_price, close_price, volume 
-            FROM daily_stock_data
-        """
+            SELECT symbol, trade_date, open_price, high_price, low_price, close_price, volume, ma_20_day, daily_pct_change 
+            FROM transformed_stock_data 
+            ORDER BY symbol, trade_date; 
+        """ # Added ORDER BY for consistency
         df = pd.read_sql_query(query, conn)
-        print(f"Successfully fetched {len(df)} rows from {DB_NAME} on {DB_HOST}.")
+        print(f"Successfully fetched {len(df)} rows from transformed_stock_data on {DB_HOST}.")
         return df
 
     except psycopg2.Error as db_err:
-        print(f"Database error occurred while connecting or querying: {db_err}")
+        print(f"Database error occurred while connecting or querying transformed_stock_data: {db_err}")
         return None
     except Exception as e:
-        print(f"An unexpected error occurred while fetching data from database: {e}")
+        print(f"An unexpected error occurred while fetching data from transformed_stock_data: {e}")
         return None
     finally:
         if conn:
@@ -46,7 +47,7 @@ def fetch_stock_data_from_db():
 
 def analyze_stock_data(df):
     if df is not None and not df.empty:
-        print("\n📊 Stock Data Analysis:")
+        print("\n📊 Transformed Stock Data Analysis:") # Updated title
         if 'close_price' in df.columns:
             avg_close = df['close_price'].mean()
             print(f"• Average Closing Price: {avg_close:.2f}")
@@ -65,6 +66,10 @@ def analyze_stock_data(df):
         else:
             print("• 'low_price' column not found.")
         
+        # You could add analysis for 'ma_20_day' or 'daily_pct_change' here
+        if 'ma_20_day' in df.columns:
+            print(f"• Latest MA_20_Day (overall last row): {df['ma_20_day'].iloc[-1] if not df['ma_20_day'].empty else 'N/A'}")
+
         if 'symbol' in df.columns:
             for symbol_name, group in df.groupby('symbol'):
                 print(f"\n--- Analysis for {symbol_name} ---")
@@ -74,12 +79,14 @@ def analyze_stock_data(df):
                     print(f"  • Highest Price: {group['high_price'].max():.2f}")
                 if 'low_price' in group.columns:
                     print(f"  • Lowest Price: {group['low_price'].min():.2f}")
+                if 'ma_20_day' in group.columns and not group['ma_20_day'].empty:
+                     print(f"  • Latest MA_20_Day: {group['ma_20_day'].iloc[-1]}") # Gets the last MA for that group
                 print(f"  • Number of days of data: {len(group)}")
     else:
-        print("No data to analyze or DataFrame is empty (Hint: Has data been inserted into 'daily_stock_data' table on the target DB yet?).")
+        print("No transformed data to analyze or DataFrame is empty.")
 
 def main():
-    print(f"--- Running fetch_and_analyze_stockdata.py ---")
+    print(f"--- Running fetch_and_analyze_stockdata.py (on transformed data) ---")
     df_from_db = fetch_stock_data_from_db()
     analyze_stock_data(df_from_db)
 
