@@ -187,7 +187,7 @@ airflow standalone
 
 ## Dashboard Preview
 
-![Grafana Dashboard](images/Screenshot.png)
+![Grafana Dashboard](images/screenshot.png)
 
 (Optional: Import `grafana_dashboards/dashboard_export.json` in Grafana to reproduce this layout.)
 
