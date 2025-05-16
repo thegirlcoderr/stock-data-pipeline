@@ -1,5 +1,3 @@
-# /Users/linda/Desktop/stocks_and_data/fetch_and_analyze_stockdata.py
-
 import psycopg2
 import pandas as pd
 from dotenv import load_dotenv
