@@ -64,7 +64,7 @@ def analyze_stock_data(df):
         else:
             print("• 'low_price' column not found.")
         
-        # You could add analysis for 'ma_20_day' or 'daily_pct_change' here
+    
         if 'ma_20_day' in df.columns:
             print(f"• Latest MA_20_Day (overall last row): {df['ma_20_day'].iloc[-1] if not df['ma_20_day'].empty else 'N/A'}")
 

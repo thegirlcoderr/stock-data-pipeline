@@ -68,8 +68,6 @@ def clean_and_transform_data(df_raw):
     print("\nMissing data report (before handling):")
     print(missing_data_report[missing_data_report > 0])
 
-    # For this example, we'll drop rows where 'close_price' is NaN
-    # In a real scenario, you might have more sophisticated imputation or logging.
     initial_rows = len(df)
     df.dropna(subset=['close_price'], inplace=True)
     rows_dropped = initial_rows - len(df)
@@ -147,7 +145,6 @@ def store_transformed_data(df_transformed, db_host, db_name, db_user, db_passwor
         cols = ['symbol', 'trade_date', 'open_price', 'high_price', 'low_price', 'close_price', 'volume', 'ma_20_day', 'daily_pct_change']
         
         # Ensure DataFrame has all necessary columns and in the correct order for insertion
-        # Handle cases where some columns might be missing after transformation (though unlikely with current logic)
         df_for_insert = df_transformed[cols].copy()
         
         tuples_to_insert = [tuple(x) for x in df_for_insert.to_numpy()]

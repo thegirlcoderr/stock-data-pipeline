@@ -98,12 +98,12 @@ def insert_stock_data_to_db(df_to_insert, db_host, db_name, db_user, db_password
         if conn:
             conn.close()
 
-# Main logic encapsulated in a function
+
 def run_pipeline(symbol_to_fetch, output_size="compact"):
     """
     Main pipeline logic: fetches stock data and stores it in the database.
     """
-    # Construct the path to the .env file relative to this script's location
+ 
     current_script_dir = os.path.dirname(os.path.abspath(__file__))
     dotenv_path = os.path.join(current_script_dir, '.env') 
     
