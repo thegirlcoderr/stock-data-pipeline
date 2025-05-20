@@ -6,22 +6,16 @@ This project implements an end-to-end data pipeline that retrieves daily stock m
 
 ```mermaid
 graph TD
-    A[Alpha Vantage API] --> B(Python Scripts: Fetch & Transform);
-    C(Apache Airflow) -- Orchestrates --> B;
-    B -- Writes Data --> D[PostgreSQL DB on AWS RDS];
-    D -- Queried by --> E[Grafana Dashboard];
-
     subgraph "Data Pipeline"
         direction LR
-        A
-        B
-        C
-        D
+        A[Alpha Vantage API] --> B(Python Scripts: Fetch & Transform)
+        C(Apache Airflow) -- Orchestrates --> B
+        B -- Writes Data --> D[PostgreSQL DB on AWS RDS]
     end
 
     subgraph "Visualization"
         direction LR
-        E
+        D --> E[Grafana Dashboard]
     end
 
     style A fill:#f9f,stroke:#333,stroke-width:2px,color:#333
@@ -29,6 +23,7 @@ graph TD
     style C fill:#f8d568,stroke:#333,stroke-width:2px,color:#333
     style D fill:#9f9,stroke:#333,stroke-width:2px,color:#333
     style E fill:#ffb366,stroke:#333,stroke-width:2px,color:#333
+
 ```
 
 ## Project Overview
