@@ -5,24 +5,81 @@ This project implements an end-to-end data pipeline that retrieves daily stock m
 ## Architecture Diagram
 
 ```mermaid
-graph TD
-    subgraph "Data Pipeline"
-        direction LR
-        A[Alpha Vantage API] --> B(Python Scripts: Fetch & Transform)
-        C(Apache Airflow) -- Orchestrates --> B
-        B -- Writes Data --> D[PostgreSQL DB on AWS RDS]
+flowchart TB
+
+    %% Data Acquisition
+    subgraph DA["𝐃𝐚𝐭𝐚 𝐀𝐜𝐪𝐮𝐢𝐬𝐢𝐭𝐢𝐨𝐧"]
+        direction TB
+        API["𝐀𝐥𝐩𝐡𝐚 𝐕𝐚𝐧𝐭𝐚𝐠𝐞 𝐀𝐏𝐈"]
+        FSD["𝐅𝐞𝐭𝐜𝐡_𝐬𝐭𝐨𝐜𝐤_𝐝𝐚𝐭𝐚.𝐩𝐲"]
+        ENV[".𝐞𝐧𝐯 𝐟𝐢𝐥𝐞"]
     end
 
-    subgraph "Visualization"
-        direction LR
-        D --> E[Grafana Dashboard]
+    %% Data Transformation
+    subgraph DT["𝐃𝐚𝐭𝐚 𝐓𝐫𝐚𝐧𝐬𝐟𝐨𝐫𝐦𝐚𝐭𝐢𝐨𝐧"]
+        direction TB
+        CAT["𝐜𝐥𝐞𝐚𝐧_𝐚𝐧𝐝_𝐭𝐫𝐚𝐧𝐬𝐟𝐨𝐫𝐦_𝐝𝐚𝐭𝐚.𝐩𝐲"]
     end
 
-    style A fill:#f9f,stroke:#333,stroke-width:2px,color:#333
-    style B fill:#bbf,stroke:#333,stroke-width:2px,color:#333
-    style C fill:#f8d568,stroke:#333,stroke-width:2px,color:#333
-    style D fill:#9f9,stroke:#333,stroke-width:2px,color:#333
-    style E fill:#ffb366,stroke:#333,stroke-width:2px,color:#333
+    %% Data Storage
+    subgraph DS["𝐃𝐚𝐭𝐚 𝐒𝐭𝐨𝐫𝐚𝐠𝐞"]
+        direction TB
+        AWS["𝐀𝐖𝐒 𝐑𝐃𝐒 𝐏𝐨𝐬𝐭𝐠𝐫𝐞𝐒𝐐𝐋"]
+        T1["𝐝𝐚𝐢𝐥𝐲_𝐬𝐭𝐨𝐜𝐤_𝐝𝐚𝐭𝐚"]
+        T2["𝐭𝐫𝐚𝐧𝐬𝐟𝐨𝐫𝐦𝐞𝐝_𝐬𝐭𝐨𝐜𝐤_𝐝𝐚𝐭𝐚"]
+        PG["𝐩𝐠𝐀𝐝𝐦𝐢𝐧"]
+    end
+
+    %% Orchestration
+    subgraph ORC["𝐎𝐫𝐜𝐡𝐞𝐬𝐭𝐫𝐚𝐭𝐢𝐨𝐧"]
+        direction TB
+        AF["𝐀𝐩𝐚𝐜𝐡𝐞 𝐀𝐢𝐫𝐟𝐥𝐨𝐰"]
+        DAG["𝐬𝐭𝐨𝐜𝐤_𝐝𝐚𝐭𝐚_𝐩𝐢𝐩𝐞𝐥𝐢𝐧𝐞_𝐝𝐚𝐠.𝐩𝐲"]
+        FT["𝐟𝐞𝐭𝐜𝐡_𝐬𝐭𝐨𝐜𝐤_𝐝𝐚𝐭𝐚_𝐭𝐚𝐬𝐤"]
+        TT["𝐭𝐫𝐚𝐧𝐬𝐟𝐨𝐫𝐦_𝐚𝐧𝐝_𝐥𝐨𝐚𝐝_𝐭𝐚𝐬𝐤"]
+    end
+
+    %% Visualization
+    subgraph VIS["𝐕𝐢𝐬𝐮𝐚𝐥𝐢𝐳𝐚𝐭𝐢𝐨𝐧"]
+        direction TB
+        GF["𝐆𝐫𝐚𝐟𝐚𝐧𝐚 𝐝𝐚𝐬𝐡𝐛𝐨𝐚𝐫𝐝𝐬"]
+        GFDB["𝐏𝐨𝐬𝐭𝐠𝐫𝐞𝐒𝐐𝐋 (𝐬𝐭𝐨𝐜𝐤_𝐝𝐚𝐭𝐚_𝐝𝐛)"]
+    end
+
+    %% Connections
+    API --> FSD
+    FSD --> T1
+    ENV --- FSD
+
+    T1 --> CAT
+    CAT --> T2
+
+    AWS --- PG
+
+    T2 --- GFDB
+    GFDB --> GF
+
+    AF --> DAG
+    DAG --> FT
+    DAG --> TT
+    FT --> FSD
+    TT --> CAT
+
+    %% Styling
+    style API fill:#f9f,stroke:#333,stroke-width:2px,color:#333
+    style FSD fill:#bbf,stroke:#333,stroke-width:2px,color:#333
+    style ENV fill:#ddd,stroke:#333,stroke-width:1px,color:#333
+    style CAT fill:#bbf,stroke:#333,stroke-width:2px,color:#333
+    style AWS fill:#9f9,stroke:#333,stroke-width:2px,color:#333
+    style T1 fill:#cde,stroke:#333,stroke-width:1px,color:#333
+    style T2 fill:#cde,stroke:#333,stroke-width:1px,color:#333
+    style PG fill:#e6e6fa,stroke:#333,stroke-width:1px,color:#333
+    style AF fill:#f8d568,stroke:#333,stroke-width:2px,color:#333
+    style DAG fill:#f8d568,stroke:#333,stroke-width:1px,color:#333,stroke-dasharray: 5 5
+    style FT fill:#f8d568,stroke:#333,stroke-width:1px,color:#333
+    style TT fill:#f8d568,stroke:#333,stroke-width:1px,color:#333
+    style GF fill:#ffb366,stroke:#333,stroke-width:2px,color:#333
+    style GFDB fill:#ffcc99,stroke:#333,stroke-width:1px,color:#333
 
 ```
 
