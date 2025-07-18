@@ -248,6 +248,13 @@ airflow standalone
 - Visualization with Grafana
 - Secrets managed with `.env`
 
+## Read the Full Walkthrough
+
+I wrote a short article describing how I built this project and why I made certain decisions.
+
+👉 [How I Built a Stock Data Pipeline](https://liinda.hashnode.dev/how-i-built-a-stock-data-pipeline)
+
+
 ## Next Steps
 
 - Add more KPIs (e.g., % change, volume trends)
